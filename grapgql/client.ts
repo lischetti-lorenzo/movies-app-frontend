@@ -7,9 +7,8 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { AUTH_TOKEN } from '../constants/auth';
 
-
 const httpLink = new HttpLink({
-  uri: process.env.MOVIES_GRAPHQL_URL,
+  uri: process.env.NEXT_PUBLIC_MOVIES_GRAPHQL_URL
 });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
@@ -25,11 +24,9 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) => {
-      if (/jwt expired/.test(message)) {
-        localStorage.removeItem(AUTH_TOKEN);
-        localStorage.removeItem("me");
-        window.location.reload();
+    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+      if (extensions.originalError && extensions.originalError['statusCode'] && extensions.originalError['statusCode'] === 401) {
+        window.location.href = '/unauthorized';
       }
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
