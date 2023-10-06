@@ -16,27 +16,32 @@ export default function Home() {
   const [ currentTvShowsPage, setCurrentTvShowsPage ] = useState(1);
   const [ popularMovies, setPopularMovies ] = useState<Movie[]>([]);
   const [ popularTvShows, setPopularTvShows ] = useState<TvShow[]>([]);
-  const [ moviesQuery, {loading: moviesLoading, data: moviesQueryResult} ] = useLazyQuery(POPULAR_MOVIES, { variables: { page: currentMoviesPage } });
-  const [ tvShowsQuery, {loading: tvShowsLoading, data: tvShowsQueryResult} ] = useLazyQuery(POPULAR_TVSHOWS, { variables: { page: currentTvShowsPage } });
+  const [ moviesQuery, {loading: moviesLoading, data: moviesQueryResult} ] = useLazyQuery(POPULAR_MOVIES);
+  const [ tvShowsQuery, {loading: tvShowsLoading, data: tvShowsQueryResult} ] = useLazyQuery(POPULAR_TVSHOWS);
 
   const handleTabChange = (event: React.SyntheticEvent, tab: string) => {
     setCurrentTab(tab);
   }
 
   useEffect(() => {
-    if (currentTab === '1') moviesQuery({ variables: { page: currentMoviesPage }});
-    if (currentTab === '2') tvShowsQuery({ variables: { page: currentTvShowsPage }});
+    if (currentTab === '1' && popularMovies.length === 0) {
+      moviesQuery({ variables: { page: currentMoviesPage }});
+    }
+    if (currentTab === '2' && popularTvShows.length === 0) tvShowsQuery({ variables: { page: currentTvShowsPage }});
   }, [currentTab]);
 
   useEffect(() => {
-    if (moviesQueryResult?.popularMovies) {
-      setPopularMovies([...popularMovies, ...moviesQueryResult.popularMovies.results])
+    if (moviesQueryResult?.popularMovies && currentMoviesPage === moviesQueryResult.popularMovies.page) {
+      console.log('test2')
+      setCurrentMoviesPage(currentMoviesPage + 1);
+      setPopularMovies([...popularMovies, ...moviesQueryResult.popularMovies.results]);
     }
   }, [moviesQueryResult?.popularMovies]);
 
   useEffect(() => {
-    if (tvShowsQueryResult?.popularTvShows) {
-      setPopularTvShows([...popularTvShows, ...tvShowsQueryResult.popularTvShows.results])
+    if (tvShowsQueryResult?.popularTvShows && currentTvShowsPage === tvShowsQueryResult.popularTvShows.page) {
+      setCurrentTvShowsPage(currentTvShowsPage + 1);
+      setPopularTvShows([...popularTvShows, ...tvShowsQueryResult.popularTvShows.results]);
     }
   }, [tvShowsQueryResult?.popularTvShows]);
 

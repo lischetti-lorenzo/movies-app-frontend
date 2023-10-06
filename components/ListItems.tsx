@@ -10,6 +10,7 @@ export function ListItems({ items }: { items: Movie[] | TvShow[]}) {
       {items.map((item: Movie | TvShow) => (
         <Grid
           key={item.tmdbId}
+          item={true}
           xs={12}
           sm={6}
           md={4}
