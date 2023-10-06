@@ -6,7 +6,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 
 export function ListItems({ items }: { items: Movie[] | TvShow[]}) {
   return (
-    <Grid container>
+    <Grid container sx={{ overflowY: 'hidden' }}>
       {items.map((item: Movie | TvShow) => (
         <Grid
           key={item.tmdbId}
