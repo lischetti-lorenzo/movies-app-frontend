@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { NavBar } from '../components/NavBar';
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import MoviesList from '../components/MoviesList';
-import TvShowsList from '../components/TvShowsList';
+import ItemsList from '../components/ItemsList';
+import { Movie } from '../types/movie.types';
+import { MOVIES, POPULAR_MOVIES } from '../grapgql/queries/movie';
+import { TvShow } from '../types/tv-show.types';
+import { POPULAR_TVSHOWS, TV_SHOWS } from '../grapgql/queries/tvShow';
 
 export default function Home() {
   const [ currentTab, setCurrentTab ] = useState('1');
@@ -25,12 +28,18 @@ export default function Home() {
           </Box>
           <TabPanel value='1' sx={{ bgcolor: 'background.paper', height: '100%' }}>
             <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center' }}>
-              <MoviesList />
+              <ItemsList<Movie>
+                firstQuery={{ queryName: POPULAR_MOVIES, resultPropertyName: 'popularMovies' }}
+                secondQuery={{ queryName: MOVIES, resultPropertyName: 'movies' }}
+              />
             </Box>
           </TabPanel>
           <TabPanel value='2' sx={{ bgcolor: 'background.paper', height: '100%' }}>
             <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center' }}>
-              <TvShowsList />
+              <ItemsList<TvShow>
+                firstQuery={{ queryName: POPULAR_TVSHOWS, resultPropertyName: 'popularTvShows' }}
+                secondQuery={{ queryName: TV_SHOWS, resultPropertyName: 'tvShows' }}
+              />
             </Box>
           </TabPanel>
         </TabContext>

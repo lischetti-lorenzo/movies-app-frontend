@@ -15,3 +15,19 @@ export const POPULAR_TVSHOWS = gql `
     }
   }
 `;
+
+export const TV_SHOWS = gql `
+  query TvShows($query: String!, $page: Int) {
+    tvShows(query: $query, page: $page) {
+      page
+      results {
+        tmdbId
+        firstAirDate
+        name
+        voteAverage
+        posterPath
+      }
+      totalPages
+    }
+  }
+`;

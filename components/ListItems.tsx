@@ -4,7 +4,7 @@ import { TvShow } from '../types/tv-show.types';
 import Link from 'next/link';
 import GradeIcon from '@mui/icons-material/Grade';
 
-export function ListItems({ items }: { items: Movie[] | TvShow[]}) {
+export function ListItems<T extends Movie | TvShow> ({ items }: { items: T[]}) {
   return (
     <Grid container sx={{ overflowY: 'hidden' }}>
       {items.map((item: Movie | TvShow) => (
