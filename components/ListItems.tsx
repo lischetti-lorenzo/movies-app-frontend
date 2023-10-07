@@ -3,11 +3,12 @@ import { Movie } from '../types/movie.types';
 import { TvShow } from '../types/tv-show.types';
 import Link from 'next/link';
 import GradeIcon from '@mui/icons-material/Grade';
+import { Media } from '../types/media.types';
 
-export function ListItems<T extends Movie | TvShow> ({ items }: { items: T[]}) {
+export function ListItems<T extends Media> ({ items }: { items: T[]}) {
   return (
     <Grid container sx={{ overflowY: 'hidden' }}>
-      {items.map((item: Movie | TvShow) => (
+      {items.map((item: Media) => (
         <Grid
           key={item.tmdbId}
           item={true}
@@ -18,7 +19,7 @@ export function ListItems<T extends Movie | TvShow> ({ items }: { items: T[]}) {
           sx={{ marginBottom: '2%', alignContent: 'center', display: 'flex', justifyContent: 'center' }}
         >                      
           <Card sx={{ maxWidth: 345 }}>
-            <Link href={`/item/${item.tmdbId}`}>
+            <Link href={`${'title' in item ? '/movie' : '/tv-show'}/${item.tmdbId}`}>
               <CardMedia
                 component='img'
                 alt={(item as Movie).title ?? (item as TvShow).name}

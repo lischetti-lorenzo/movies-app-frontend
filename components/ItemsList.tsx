@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import { Movie } from '../types/movie.types';
 import { DocumentNode, useLazyQuery } from '@apollo/client';
 import { CircularProgress, Stack, Box } from '@mui/material';
 import { SearchBar } from './SearchBar';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ListItems } from './ListItems';
-import { TvShow } from '../types/tv-show.types';
+import { Media } from '../types/media.types';
 
 interface Props {
   firstQuery: {
@@ -19,7 +18,7 @@ interface Props {
   }
 }
 
-export default function ItemsList<T extends Movie | TvShow> (
+export default function ItemsList<T extends Media> (
   { firstQuery, secondQuery }: Props
 ) {
   const [ page, setPage ] = useState(1);
