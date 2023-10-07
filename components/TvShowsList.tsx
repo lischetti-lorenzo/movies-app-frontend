@@ -11,6 +11,7 @@ export default function TvShowsList() {
   const [ currentTvShowsPage, setCurrentTvShowsPage ] = useState(1);
   const [ tvShows, setTvShows ] = useState<TvShow[]>([]);
   const [ loadingPage, setLoadingPage ] = useState(true);
+  const [ searchText, setSearchText ] = useState('');
 
   const [ tvShowsQuery, {loading, data: tvShowsQueryResult} ] = useLazyQuery(POPULAR_TVSHOWS);
 
@@ -36,6 +37,7 @@ export default function TvShowsList() {
           <SearchBar
             placeholder='Search Tv Shows'
             className='mx-auto mb-5'
+            setSearchText={setSearchText}
           />
           <InfiniteScroll
             dataLength={tvShows.length}

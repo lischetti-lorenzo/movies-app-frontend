@@ -15,3 +15,19 @@ export const POPULAR_MOVIES = gql `
     }
   }
 `;
+
+export const MOVIES = gql `
+  query Movies($query: String!, $page: Int) {
+    movies(query: $query, page: $page) {
+      page
+      results {
+        tmdbId
+        title
+        posterPath
+        releaseDate
+        voteAverage
+      }
+      totalPages
+    }
+  }
+`;

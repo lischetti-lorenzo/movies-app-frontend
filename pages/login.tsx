@@ -33,7 +33,6 @@ export default function Login() {
   const [login] = useMutation(LOGIN, {
     variables: { loginUserInput: loginForm },
     onCompleted: (data: LoginResponse) => {
-      console.log('Data: ', data)
       const { access_token, user } = data.login;
       if (access_token && user) {
         localStorage.setItem(AUTH_TOKEN, access_token);
