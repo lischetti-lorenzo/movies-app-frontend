@@ -1,4 +1,9 @@
 import { gql } from '@apollo/client';
+import { Movie } from '../../types/movie.types';
+
+export interface MovieResult {
+  movie: Movie;
+}
 
 export const POPULAR_MOVIES = gql `
   query PopularMovies($page: Int) {
@@ -46,6 +51,7 @@ export const MOVIE = gql `
           character
           name
           order
+          profilePath
         }
       }
     }
