@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router';
 import { NavBar } from '../../../components/NavBar';
-import { Card, CardContent, CardMedia, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, Card, CardMedia, CircularProgress, Stack, Typography } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { MOVIE } from '../../../grapgql/queries/movie';
 import { Movie } from '../../../types/movie.types';
-import GradeIcon from '@mui/icons-material/Grade';
 import { UserRating } from '../../../components/ui/UserRating';
 
 interface MovieResult {
@@ -22,14 +21,16 @@ export default function Movie () {
     <>
       <NavBar />
       {loading ? (
-        <CircularProgress />
+        <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center', mt: '2%' }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <Stack
           direction={'row'}
           sx={{ width: '65%', typography: 'body1', height: '100%', marginTop: '2%', marginX: 'auto' }}
         >
           <Stack
-            direction={'row'}
+            direction={{ sm: 'column', md: 'row' }}
             style={{ width: '100%' }}
           >
             <Card sx={{ maxWidth: 300 }}>
@@ -39,7 +40,7 @@ export default function Movie () {
                 image={movie.posterPath ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_URL}${movie.posterPath}` : ''}
               />
             </Card>
-            <Stack direction={'column'} ml={5} width={'100%'} my={'auto'}>
+            <Stack direction={'column'} ml={{ sm: '0', md: '4%'}} width={'100%'} my={'auto'}>
               <Typography
                 gutterBottom
                 variant='h4'
