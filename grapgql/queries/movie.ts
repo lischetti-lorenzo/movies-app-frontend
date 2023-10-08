@@ -31,3 +31,23 @@ export const MOVIES = gql `
     }
   }
 `;
+
+export const MOVIE = gql `
+  query Movie($tmdbMovieId: Int!) {
+    movie(tmdbMovieId: $tmdbMovieId) {
+      title
+      posterPath
+      backdropPath
+      releaseDate
+      voteAverage
+      overview
+      credit {
+        cast {
+          character
+          name
+          order
+        }
+      }
+    }
+  }
+`;

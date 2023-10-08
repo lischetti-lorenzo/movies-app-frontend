@@ -19,6 +19,7 @@ export interface Media {
   overview: string;
   popularity: number;
   posterPath: string | null;
+  backdropPath: string | null;
   voteAverage: number;
   credit: Credit;
 }

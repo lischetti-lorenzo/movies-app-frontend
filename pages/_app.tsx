@@ -51,7 +51,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ApolloProvider client={client}>
           <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-              <main className="font-manrope min-h-screen bg-primary-color">
+              <main className="font-manrope min-h-screen" style={{ backgroundColor: 'background.paper'}}>
                 <ProtectedRoute {...pageProps}>
                   <Component {...pageProps} />
                 </ProtectedRoute>
