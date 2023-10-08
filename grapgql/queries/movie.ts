@@ -5,6 +5,10 @@ export interface MovieResult {
   movie: Movie;
 }
 
+export interface LikeMovieInput {
+  movieId: number
+}
+
 export const POPULAR_MOVIES = gql `
   query PopularMovies($page: Int) {
     popularMovies(page: $page) {
@@ -46,6 +50,7 @@ export const MOVIE = gql `
       releaseDate
       voteAverage
       overview
+      favorite
       credit {
         cast {
           character
@@ -57,3 +62,15 @@ export const MOVIE = gql `
     }
   }
 `;
+
+export const LIKE_MOVIE = gql `
+  mutation LikeMovie($movieId: Int!) {
+    likeMovie(movieId: $movieId)
+  }
+`
+
+export const DISLIKE_MOVIE = gql `
+  mutation DislikeMovie($movieId: Int!) {
+    unlikeMovie(movieId: $movieId)
+  }
+`

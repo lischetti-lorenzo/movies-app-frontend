@@ -5,7 +5,6 @@ import { AUTH_TOKEN } from '../constants/auth';
 
 export const ProtectedRoute = ({ children }: { children: any }) => {
   const router = useRouter();
-  // TODO: check why user is always undefined
   const { user } = useContext(AuthContext);  
 
   useEffect(() => {

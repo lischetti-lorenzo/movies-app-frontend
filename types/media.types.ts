@@ -24,4 +24,5 @@ export interface Media {
   backdropPath: string | null;
   voteAverage: number;
   credit: Credit;
+  favorite: boolean;
 }
