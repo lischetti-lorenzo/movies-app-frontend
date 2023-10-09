@@ -2,7 +2,15 @@ import { useRouter } from 'next/router';
 import { NavBar } from '../../../components/NavBar';
 import { Box, CircularProgress, Stack } from '@mui/material';
 import { useMutation, useQuery } from '@apollo/client';
-import { DISLIKE_MOVIE, LIKE_MOVIE, LikeMovieInput, MOVIE, MovieResult } from '../../../grapgql/queries/movie';
+import {
+  DISLIKE_MOVIE,
+  DislikeMovieResult,
+  LIKE_MOVIE,
+  LikeMovieInput,
+  LikeMovieResult,
+  MOVIE,
+  MovieResult
+} from '../../../grapgql/queries/movie';
 import { Movie } from '../../../types/movie.types';
 import ActorsList from '../../../components/ActorsList';
 import { useEffect, useState } from 'react';
@@ -15,15 +23,47 @@ export default function Movie () {
   const id = +router.query.id;
 
   const { data, loading } = useQuery<MovieResult, { tmdbMovieId: number }>(MOVIE, { variables: { tmdbMovieId: id }});
-  const [ likeMovie ] = useMutation<boolean, LikeMovieInput>(LIKE_MOVIE, {
+  const [ likeMovie ] = useMutation<LikeMovieResult, LikeMovieInput>(LIKE_MOVIE, {
     onCompleted: () => {
       setFavorite(true);
+    },
+    update(cache, { data: { likeMovie }}) {
+      cache.modify({
+        fields: {
+          movie(item = null, { readField }) {
+            if (item === null) return;
+            return {
+              ...item,
+              favorite: true
+            };
+          },
+          favoriteMovies(existingItems = [], { readField }) {
+            return [...existingItems, likeMovie];
+          }
+        }
+      });
     }
   });
 
-  const [ dislikeMovie ] = useMutation<boolean, LikeMovieInput>(DISLIKE_MOVIE, {
+  const [ dislikeMovie ] = useMutation<DislikeMovieResult, LikeMovieInput>(DISLIKE_MOVIE, {
     onCompleted: () => {
       setFavorite(false);
+    },
+    update(cache, { data: { unlikeMovie }}) {
+      cache.modify({
+        fields: {
+          favoriteMovies(existingItems = [], { readField }) {
+            return existingItems.filter((itemRef) => readField('tmdbId', itemRef) !== unlikeMovie)
+          },
+          movie(item = null, { readField }) {
+            if (item === null) return;
+            return {
+              ...item,
+              favorite: false
+            };
+          }
+        }
+      });
     }
   });
 

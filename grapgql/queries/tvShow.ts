@@ -9,6 +9,14 @@ export interface LikeTvShowInput {
   tvShowId: number
 }
 
+export interface DislikeTvShowResult {
+  unlikeTvShow: number
+}
+
+export interface LikeTvShowResult {
+  likeTvShow: TvShow
+}
+
 export interface FavoriteTvShowsResult {
   favoriteTvShows: TvShow[]
   totalFavoriteTvShows: number
@@ -72,7 +80,13 @@ export const TVSHOW = gql `
 
 export const LIKE_TVSHOW = gql `
   mutation LikeTvShow($tvShowId: Int!) {
-    likeTvShow(tvShowId: $tvShowId)
+    likeTvShow(tvShowId: $tvShowId) {
+      tmdbId
+      firstAirDate
+      name
+      voteAverage
+      posterPath
+    }
   }
 `
 

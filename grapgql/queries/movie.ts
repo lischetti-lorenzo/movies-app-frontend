@@ -14,6 +14,14 @@ export interface FavoriteMoviesResult {
   totalFavoriteMovies: number
 }
 
+export interface DislikeMovieResult {
+  unlikeMovie: number
+}
+
+export interface LikeMovieResult {
+  likeMovie: Movie
+}
+
 export const POPULAR_MOVIES = gql `
   query PopularMovies($page: Int) {
     popularMovies(page: $page) {
@@ -70,7 +78,13 @@ export const MOVIE = gql `
 
 export const LIKE_MOVIE = gql `
   mutation LikeMovie($movieId: Int!) {
-    likeMovie(movieId: $movieId)
+    likeMovie(movieId: $movieId) {
+      tmdbId
+      title
+      posterPath
+      releaseDate
+      voteAverage
+    }
   }
 `
 

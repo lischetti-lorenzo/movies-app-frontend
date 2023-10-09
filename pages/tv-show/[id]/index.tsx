@@ -6,7 +6,7 @@ import { TvShow } from '../../../types/tv-show.types';
 import ActorsList from '../../../components/ActorsList';
 import { useEffect, useState } from 'react';
 import ItemDetail from '../../../components/ItemDetail';
-import { DISLIKE_TVSHOW, LIKE_TVSHOW, LikeTvShowInput, TVSHOW, TvShowResult } from '../../../grapgql/queries/tvShow';
+import { DISLIKE_TVSHOW, DislikeTvShowResult, LIKE_TVSHOW, LikeTvShowInput, LikeTvShowResult, TVSHOW, TvShowResult } from '../../../grapgql/queries/tvShow';
 
 export default function TvShow () {
   const router = useRouter();
@@ -15,15 +15,47 @@ export default function TvShow () {
   const id = +router.query.id;
 
   const { data, loading } = useQuery<TvShowResult, { tmdbTvShowId: number }>(TVSHOW, { variables: { tmdbTvShowId: id }});
-  const [ likeMovie ] = useMutation<boolean, LikeTvShowInput>(LIKE_TVSHOW, {
+  const [ likeMovie ] = useMutation<LikeTvShowResult, LikeTvShowInput>(LIKE_TVSHOW, {
     onCompleted: () => {
       setFavorite(true);
+    },
+    update(cache, { data: { likeTvShow }}) {
+      cache.modify({
+        fields: {
+          tvShow(item = null, { readField }) {
+            if (item === null) return;
+            return {
+              ...item,
+              favorite: true
+            };
+          },
+          favoriteTvShows(existingItems = [], { readField }) {
+            return [...existingItems, likeTvShow];
+          }
+        }
+      });
     }
   });
 
-  const [ dislikeMovie ] = useMutation<boolean, LikeTvShowInput>(DISLIKE_TVSHOW, {
+  const [ dislikeMovie ] = useMutation<DislikeTvShowResult, LikeTvShowInput>(DISLIKE_TVSHOW, {
     onCompleted: () => {
       setFavorite(false);
+    },
+    update(cache, { data: { unlikeTvShow }}) {
+      cache.modify({
+        fields: {
+          favoriteTvShows(existingItems = [], { readField }) {
+            return existingItems.filter((itemRef) => readField('tmdbId', itemRef) !== unlikeTvShow)
+          },
+          tvShow(item = null, { readField }) {
+            if (item === null) return;
+            return {
+              ...item,
+              favorite: false
+            };
+          }
+        }
+      });
     }
   });
 

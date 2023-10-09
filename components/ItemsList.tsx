@@ -57,11 +57,8 @@ export default function ItemsList<T extends Media> (
   }, [searchText]);
 
   useEffect(() => {
-    console.log('Ready to query: ', readyToQuery)
-    console.log('Search text: ', searchText)
     if (readyToQuery) {
-      if (searchText === '') {     
-        console.log('first') 
+      if (searchText === '') {
         firstQry({ variables: { page: page } });
       } else {
         secondQry({ variables: { page: page, query: searchText } });
