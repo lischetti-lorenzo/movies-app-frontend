@@ -34,7 +34,6 @@ export default function Movie () {
 
   const handleLikeBtnClick = () => {
     if (favorite) {
-      console.log('Movie id: ', movie.tmdbId)
       dislikeMovie({ variables: { movieId: id } });
     } else {
       likeMovie({ variables: { movieId: id } });

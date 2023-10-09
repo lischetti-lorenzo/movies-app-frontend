@@ -28,7 +28,7 @@ export default function ActorsList ({ actors }: { actors: Cast[]}) {
           marginTop: '2%',
           overflow: 'scroll'
         }}
-        style={{ overflowX: 'scroll', overflowY: 'hidden' }}
+        style={{ overflowX: 'auto', overflowY: 'hidden' }}
       >
         {actors.map(actor => {
           return (
@@ -37,6 +37,8 @@ export default function ActorsList ({ actors }: { actors: Cast[]}) {
                 component='img'
                 image={actor.profilePath ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_URL}${actor.profilePath}` : ''}
                 alt={actor.name}
+                height={'370px'}
+                className='actorProfilePicture'
               />
               <CardContent>
                 <Typography gutterBottom variant='h5' component='div'>

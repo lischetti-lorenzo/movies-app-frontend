@@ -1,4 +1,13 @@
 import { gql } from '@apollo/client';
+import { TvShow } from '../../types/tv-show.types';
+
+export interface TvShowResult {
+  tvShow: TvShow;
+}
+
+export interface LikeTvShowInput {
+  tvShowId: number
+}
 
 export const POPULAR_TVSHOWS = gql `
   query PopularTvShows($page: Int) {
@@ -31,3 +40,39 @@ export const TV_SHOWS = gql `
     }
   }
 `;
+
+export const TVSHOW = gql `
+  query TvShow($tmdbTvShowId: Int!) {
+    tvShow(tmdbTvShowId: $tmdbTvShowId) {
+      name
+      posterPath
+      backdropPath
+      firstAirDate
+      voteAverage
+      overview
+      favorite
+
+      credit {
+        cast {
+          character
+          id
+          name
+          order
+          profilePath
+        }
+      }    
+    }
+  }
+`;
+
+export const LIKE_TVSHOW = gql `
+  mutation LikeTvShow($tvShowId: Int!) {
+    likeTvShow(tvShowId: $tvShowId)
+  }
+`
+
+export const DISLIKE_TVSHOW = gql `
+  mutation DisLikeTvShow($tvShowId: Int!) {
+    unlikeTvShow(tvShowId: $tvShowId)
+  }
+`
