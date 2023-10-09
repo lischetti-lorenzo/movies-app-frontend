@@ -9,6 +9,11 @@ export interface LikeTvShowInput {
   tvShowId: number
 }
 
+export interface FavoriteTvShowsResult {
+  favoriteTvShows: TvShow[]
+  totalFavoriteTvShows: number
+}
+
 export const POPULAR_TVSHOWS = gql `
   query PopularTvShows($page: Int) {
     popularTvShows(page: $page) {
@@ -76,3 +81,16 @@ export const DISLIKE_TVSHOW = gql `
     unlikeTvShow(tvShowId: $tvShowId)
   }
 `
+
+export const FAVORITE_TVSHOWS = gql `
+  query FavoriteTvShows($skip: Int!, $take: Int!) {
+    favoriteTvShows(skip: $skip, take: $take) {
+      tmdbId
+      firstAirDate
+      name
+      voteAverage
+      posterPath
+    }
+    totalFavoriteTvShows
+  }
+`;

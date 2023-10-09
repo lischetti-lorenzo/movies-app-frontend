@@ -22,6 +22,9 @@ interface Page {
 const pages: Page[] = [{
   label: 'Home',
   link: '/'
+}, {
+  label: 'Favorites',
+  link: '/favorites'
 }];
 
 export function NavBar() {

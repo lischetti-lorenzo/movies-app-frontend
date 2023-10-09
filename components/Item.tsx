@@ -1,11 +1,16 @@
 import Link from 'next/link';
 import { Media } from '../types/media.types';
-import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { Movie } from '../types/movie.types';
 import { TvShow } from '../types/tv-show.types';
 import GradeIcon from '@mui/icons-material/Grade';
 
-export function Item ({ item }: { item: Media }) {
+interface Props {
+  item: Media
+  cardAction?: () => void
+}
+
+export function Item ({ item, cardAction }: Props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <Link href={`${'title' in item ? '/movie' : '/tv-show'}/${item.tmdbId}`}>
@@ -28,6 +33,13 @@ export function Item ({ item }: { item: Media }) {
           </Stack>
         </CardContent>
       </Link>
+      {cardAction ? (
+        <CardActions>
+          <Button size='small' onClick={cardAction}>Remove favorite</Button>
+        </CardActions>
+      ) : (
+        <></>
+      )}
     </Card>
   );
 }
