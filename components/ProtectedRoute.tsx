@@ -8,7 +8,7 @@ export const ProtectedRoute = ({ children }: { children: any }) => {
   const { user } = useContext(AuthContext);  
 
   useEffect(() => {
-    const publicRoutes = ['/login'];
+    const publicRoutes = ['/login', '/signup'];
     const token = localStorage.getItem(AUTH_TOKEN);
     if (publicRoutes.includes(router.pathname) && token) {
       router.push('/');
