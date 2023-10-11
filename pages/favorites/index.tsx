@@ -29,7 +29,7 @@ export default function Favorites () {
             </Box>
           </TabPanel>
           <TabPanel value='2' sx={{ bgcolor: 'background.paper', height: '100%' }}>
-            <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', height: '100%' }}>
               <FavoriteTvShow />
             </Box>
           </TabPanel>

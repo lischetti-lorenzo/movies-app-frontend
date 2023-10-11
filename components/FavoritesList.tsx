@@ -16,7 +16,7 @@ export default function FavoritesList (
 ) {
 
   return (
-    <Stack direction={'column'}>
+    <Stack direction={'column'} sx={{ width: '100%' }}>
       <Typography
         variant='h4'
         component='div'
