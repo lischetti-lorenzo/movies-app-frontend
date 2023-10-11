@@ -2,6 +2,8 @@ import { Card, CardMedia, Stack, Typography } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { UserRating } from './ui/UserRating';
+import { User } from '../types/user.types';
+import { USER } from '../constants/auth';
 
 interface Props {
   title: string
@@ -22,6 +24,7 @@ export default function ItemDetail ({
   rating,
   overview
 }: Props) {
+  const user = JSON.parse(localStorage.getItem(USER)) as User;
   return (
     <>
       <Card sx={{ maxWidth: 300 }}>
@@ -42,15 +45,19 @@ export default function ItemDetail ({
             {title}
           </Typography>
 
-          <button
-            onClick={handleLikeBtnClick}
-          >
-            {isFav ? (
-              <FavoriteIcon fontSize='large' />
-            ) : (
-              <FavoriteBorderIcon fontSize='large' />
-            )}
-          </button>
+          {user.role === 'FULL_ACCESS' ? (
+            <button
+              onClick={handleLikeBtnClick}
+            >
+              {isFav ? (
+                <FavoriteIcon fontSize='large' />
+              ) : (
+                <FavoriteBorderIcon fontSize='large' />
+              )}
+            </button>
+          ) : (
+            <></>
+          )}          
         </Stack>
 
         <Typography

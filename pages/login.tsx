@@ -8,7 +8,7 @@ import Input from '../components/ui/Input';
 import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../grapgql/queries/user';
-import { AUTH_TOKEN } from '../constants/auth';
+import { AUTH_TOKEN, USER } from '../constants/auth';
 import { AuthContext } from '../services/providers/AuthContext';
 import { showErrorToast } from '../components/ToastNotify';
 
@@ -36,6 +36,7 @@ export default function Login() {
       const { access_token, user } = data.login;
       if (access_token && user) {
         localStorage.setItem(AUTH_TOKEN, access_token);
+        localStorage.setItem(USER, JSON.stringify(user));
         setUser(user);
         router.push('/');
       }

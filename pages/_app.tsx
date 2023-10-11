@@ -3,7 +3,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { client } from '../grapgql/client'
 import { AuthContext } from '../services/providers/AuthContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 import ToastNotify from '../components/ToastNotify'
 import {
@@ -12,6 +12,8 @@ import {
   Manrope
 } from "@next/font/google";
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import { USER } from '../constants/auth'
+import { User } from '../types/user.types'
 
 const poppins = Poppins({
   weight: ["100", "400", "700"],
@@ -35,7 +37,15 @@ const darkTheme = createTheme({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState<User>(undefined);
+
+  useEffect(() => {
+    
+    if (!user) {
+      const storedUser = JSON.parse(localStorage.getItem(USER)) as User;
+      if (storedUser) setUser(storedUser);
+    }
+  }, []);
 
   return (
     <>

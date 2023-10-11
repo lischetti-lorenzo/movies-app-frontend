@@ -12,23 +12,11 @@ import MenuItem from '@mui/material/MenuItem';
 import TheatersIcon from '@mui/icons-material/Theaters';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../services/providers/AuthContext';
-import { AUTH_TOKEN } from '../constants/auth';
-
-interface Page {
-  label: string
-  link: string
-}
-
-const pages: Page[] = [{
-  label: 'Home',
-  link: '/'
-}, {
-  label: 'Favorites',
-  link: '/favorites'
-}];
+import { AUTH_TOKEN, USER } from '../constants/auth';
+import { pages } from '../constants/pages';
 
 export function NavBar() {
-  const { setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const router = useRouter();
 
@@ -47,6 +35,7 @@ export function NavBar() {
   const logout = () => {
     setUser(undefined);
     localStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(USER);
     router.push('/login');
   }
 
@@ -102,11 +91,17 @@ export function NavBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.label} onClick={() => handlePageClick(page.link)}>
-                  <Typography textAlign="center">{page.label}</Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page) => {
+                if (page.label && (!page.roles || page.roles.includes(user?.role))) {
+                  return (
+                    <MenuItem key={page.label} onClick={() => handlePageClick(page.link)}>
+                      <Typography textAlign="center">{page.label}</Typography>
+                    </MenuItem>
+                  )
+                } else {
+                  <></>
+                }
+              })}
             </Menu>
           </Box>
           <TheatersIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -129,15 +124,23 @@ export function NavBar() {
             MOVIES
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.label}
-                onClick={() => handlePageClick(page.link)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.label}
-              </Button>
-            ))}
+            {pages.map((page) => {
+              console.log('Page roles: ', page.roles)
+              console.log('user roles: ', user?.role)
+              if (page.label && (!page.roles || page.roles?.includes(user?.role))) {
+                return (
+                  <Button
+                    key={page.label}
+                    onClick={() => handlePageClick(page.link)}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page.label}
+                  </Button>
+                )
+              } else {
+                <></>
+              }
+            })}
           </Box>
 
           <Button color="inherit" onClick={logout}>Logout</Button>

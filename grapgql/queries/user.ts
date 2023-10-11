@@ -22,6 +22,7 @@ export const LOGIN = gql`
       user {
         id
         username
+        role
       }
     }
   }
